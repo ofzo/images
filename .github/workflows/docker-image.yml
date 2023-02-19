@@ -53,3 +53,4 @@ jobs:
           tags: |
             ${{ env.DOCKER_REPO }}:latest
             ${{ env.DOCKER_REPO }}:${{ env.APP_VERSION }}
+          file: dockerfile.node.18.9.0
