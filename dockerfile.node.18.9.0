@@ -1,0 +1,20 @@
+FROM ubuntu:latest
+# WORKDIR /app
+SHELL ["/bin/bash", "-c"]
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+ENV NODE_VERSION=18.9.0
+
+RUN apt-get update
+RUN apt install -y curl
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+ENV NVM_DIR=/root/.nvm
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+RUN pnpm install pm2 --global
+EXPOSE 8080
